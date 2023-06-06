@@ -1,7 +1,7 @@
 // import 'package:curved_navigation_bar_with_label/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:libarary_apps_dart/main.dart';
+
 import 'package:line_icons/line_icons.dart';
 
 
