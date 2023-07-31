@@ -97,16 +97,17 @@ class _HomeState extends State<Home> {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 class ListBook extends StatelessWidget {
-  const ListBook({Key? key}) : super(key: key);
+  const ListBook({ Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     final bookProvider = Provider.of<BookProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('List Buku'),
-        backgroundColor: Colors.blue,
+          backgroundColor: Color(0xffd8b9ff),
       ),
 
       body: Consumer<BookProvider>(
@@ -130,6 +131,7 @@ class ListBook extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BooksDetail(
+                    // bookId: book.id,
                   )),
                 );
               },
@@ -144,7 +146,7 @@ class ListBook extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const createBook()),
           );
         },
-        tooltip: 'Increment',
+        tooltip: 'tambah baru',
         child: const Icon(Icons.add),
       ),
     );
@@ -209,15 +211,17 @@ class BookProvider extends ChangeNotifier {
 }
 
 class Book {
+  // final String id;
   final String judul;
   final String author;
   // final String id;
   // Add more properties if necessary.
 
-  Book({required this.judul, required this.author });
-
+  // Book({required this.id, required this.judul, required this.author });
+  Book({ required this.judul, required this.author });
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
+      // id: json["id"],
       judul: json["Judul"],
       author: json["Author"]
     );
