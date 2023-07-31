@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:libarary_apps_dart/main.dart';
 
 class createBook extends StatefulWidget {
   const createBook({Key? key}) : super(key: key);
@@ -55,6 +56,8 @@ class _createBookState extends State<createBook> {
                         "Author": authorController.text,
                       }
                     }));
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ListBook()),);
                 },
                 child: Text("Simpan"))
             ],

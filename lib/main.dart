@@ -1,12 +1,10 @@
 import 'dart:html';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:libarary_apps_dart/create.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
 import 'books.dart';
 
@@ -74,7 +72,7 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Text(
-                        "Login ",
+                        "Welcome ",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 40,
@@ -82,7 +80,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       const SizedBox(height: 50,),
-                      loginBtn(context),
+                      welcomeBtn(context),
                     ],
                   ),
                 ),
@@ -116,24 +114,11 @@ class ListBook extends StatelessWidget {
           itemBuilder: (context, index) {
             final book = bookProvider.books[index];
             return ListTile(
+              leading: Icon(Icons.image),
               title: Text(book.judul,),
               subtitle: Text( book.author),
-              // leading: SizedBox(
-              //   height: 100.0,
-              //   width: 100.0, // fixed width and height
-              //   child: Image.asset(book.image),
-              //   ),
-
-
 
               onTap: () {
-                // print(book.id);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => BooksDetail(
-                    // bookId: book.id,
-                  )),
-                );
               },
             );
           },
@@ -153,18 +138,12 @@ class ListBook extends StatelessWidget {
   }
 }
 
-Widget loginBtn(BuildContext context) {
+Widget welcomeBtn(BuildContext context) {
   return Container(
-    padding: const EdgeInsets.symmetric(vertical: 25),
-    width: double.infinity,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        backgroundColor: Colors.white,
-      ),
+    padding: const EdgeInsets.symmetric(vertical: 200),
+    child: FloatingActionButton(
+      backgroundColor: const Color(0xffffffff),
+      foregroundColor: Colors.black,
       onPressed: () {
         final bookProvider = Provider.of<BookProvider>(context, listen: false);
         bookProvider.getBooks().then((_) {
@@ -174,16 +153,10 @@ Widget loginBtn(BuildContext context) {
           );
         });
       },
-      child: const Text(
-        "Login",
-        style: TextStyle(
-          color: Color(0xffd8b9ff),
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  );
+      child: const Icon(Icons.keyboard_double_arrow_right_rounded),
+    ));
+    //////////
+
 }
 
 class BookProvider extends ChangeNotifier {
@@ -197,33 +170,32 @@ class BookProvider extends ChangeNotifier {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
-
       var response = await http.get(Uri.parse('http://localhost:1337/api/libraries'), headers: headers);
-      var dataJson = jsonDecode(response.body);
 
-      _books = List<Book>.from(dataJson["data"].map((bookData) => Book.fromJson(bookData["attributes"])));
-      notifyListeners();
+        var dataJson = jsonDecode(response.body);
+        _books = List<Book>.from(dataJson["data"].map((bookData) => Book.fromJson(bookData["attributes"])));
+        notifyListeners();
 
     } catch (error) {
+      print('Error fetching books: $error');
       throw Exception('Failed to fetch books');
     }
   }
+
 }
 
 class Book {
-  // final String id;
+
   final String judul;
   final String author;
-  // final String id;
-  // Add more properties if necessary.
 
-  // Book({required this.id, required this.judul, required this.author });
-  Book({ required this.judul, required this.author });
+  Book({ required this.judul, required this.author,});
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
       // id: json["id"],
       judul: json["Judul"],
-      author: json["Author"]
+      author: json["Author"],
+
     );
   }
 }
